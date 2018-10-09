@@ -1,134 +1,75 @@
 {
-  "name": "grunt-contrib-less",
-  "description": "Compile LESS files to CSS.",
-  "version": "1.0.1",
-  "homepage": "https://github.com/gruntjs/grunt-contrib-less",
+  "_from": "grunt-contrib-less",
+  "_id": "grunt-contrib-less@2.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-nsaODoEMjVn61OuqPaFeFQpb4Qd/EbfxQDeYnh2oONXm8L5Gnuchtv59kl0V3hjiFdOkZlPILDc3ZrkoZI0PNw==",
+  "_location": "/grunt-contrib-less",
+  "_phantomChildren": {
+    "escape-string-regexp": "1.0.5",
+    "lodash": "4.17.11"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "grunt-contrib-less",
+    "name": "grunt-contrib-less",
+    "escapedName": "grunt-contrib-less",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/grunt-contrib-less/-/grunt-contrib-less-2.0.0.tgz",
+  "_shasum": "ca4b78e15e54610cc04332d5fa0b196b203b14d9",
+  "_spec": "grunt-contrib-less",
+  "_where": "/Applications/MAMP/htdocs/node_modules_new",
+  "appveyor_id": "ho4vr86k30r8un49",
   "author": {
     "name": "Grunt Team",
     "url": "http://gruntjs.com/"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/gruntjs/grunt-contrib-less.git"
-  },
   "bugs": {
     "url": "https://github.com/gruntjs/grunt-contrib-less/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/gruntjs/grunt-contrib-less/blob/master/LICENSE-MIT"
-    }
-  ],
+  "bundleDependencies": false,
+  "dependencies": {
+    "async": "^2.0.0",
+    "chalk": "^1.0.0",
+    "less": "^3.0.4",
+    "lodash": "^4.17.10"
+  },
+  "deprecated": false,
+  "description": "Compile LESS files to CSS",
+  "devDependencies": {
+    "grunt": "^1.0.2",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-internal": "^3.0.0",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-contrib-nodeunit": "^2.0.0",
+    "less-plugin-clean-css": "^1.5.0"
+  },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6"
+  },
+  "files": [
+    "tasks"
+  ],
+  "homepage": "https://github.com/gruntjs/grunt-contrib-less#readme",
+  "keywords": [
+    "gruntplugin"
+  ],
+  "license": "MIT",
+  "main": "tasks/less.js",
+  "name": "grunt-contrib-less",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gruntjs/grunt-contrib-less.git"
   },
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies": {
-    "async": "^0.9.0",
-    "chalk": "^0.5.1",
-    "less": "~2.4.0",
-    "lodash": "^2.4.1"
-  },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-internal": "^0.4.11",
-    "grunt-contrib-jshint": "^0.10.0",
-    "grunt-contrib-nodeunit": "^0.4.1",
-    "less-plugin-clean-css": "^1.2.0"
-  },
-  "peerDependencies": {
-    "grunt": "~0.4.5"
-  },
-  "keywords": [
-    "gruntplugin"
-  ],
-  "files": [
-    "tasks",
-    "LICENSE-MIT"
-  ],
-  "appveyor_id": "e3aa4d07xe4w4u05",
-  "contributors": [
-    {
-      "name": "Tyler Kellen",
-      "url": "http://goingslowly.com/"
-    },
-    {
-      "name": "\"Cowboy\" Ben Alman",
-      "url": "http://benalman.com/"
-    },
-    {
-      "name": "Chris Talkington",
-      "url": "http://christalkington.com/"
-    },
-    {
-      "name": "Teddy Cross",
-      "url": "http://tkaz.ec/"
-    },
-    {
-      "name": "Justin Searls",
-      "url": "http://about.me/searls/"
-    },
-    {
-      "name": "Thomas Boyt",
-      "url": "http://www.thomasboyt.com/"
-    },
-    {
-      "name": "Jake Harding",
-      "url": "http://thejakeharding.com/"
-    },
-    {
-      "name": "Jason Karns",
-      "url": "http://jasonkarns.com/"
-    },
-    {
-      "name": "Sebastian Tschan",
-      "url": "https://blueimp.net/"
-    }
-  ],
-  "gitHead": "75e1386ac380c553f5a8b1984f905d991864855c",
-  "_id": "grunt-contrib-less@1.0.1",
-  "_shasum": "87f32a5e474987a405c9c9890d33686a45021d51",
-  "_from": "grunt-contrib-less@",
-  "_npmVersion": "2.4.1",
-  "_nodeVersion": "0.10.35",
-  "_npmUser": {
-    "name": "vladikoff",
-    "email": "vlad@vladikoff.com"
-  },
-  "maintainers": [
-    {
-      "name": "tkellen",
-      "email": "tyler@sleekcode.net"
-    },
-    {
-      "name": "cowboy",
-      "email": "cowboy@rj3.net"
-    },
-    {
-      "name": "shama",
-      "email": "kyle@dontkry.com"
-    },
-    {
-      "name": "vladikoff",
-      "email": "vlad@vladikoff.com"
-    },
-    {
-      "name": "jmeas",
-      "email": "jellyes2@gmail.com"
-    },
-    {
-      "name": "sindresorhus",
-      "email": "sindresorhus@gmail.com"
-    }
-  ],
-  "dist": {
-    "shasum": "87f32a5e474987a405c9c9890d33686a45021d51",
-    "tarball": "http://registry.npmjs.org/grunt-contrib-less/-/grunt-contrib-less-1.0.1.tgz"
-  },
-  "directories": {},
-  "_resolved": "https://registry.npmjs.org/grunt-contrib-less/-/grunt-contrib-less-1.0.1.tgz"
+  "version": "2.0.0"
 }

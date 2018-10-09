@@ -1,50 +1,65 @@
 {
-  "name": "grunt-bless",
-  "description": "Split CSS files suitable for IE",
-  "version": "0.2.0",
-  "homepage": "https://github.com/Ponginae/grunt-bless",
+  "_from": "grunt-bless",
+  "_id": "grunt-bless@1.0.2",
+  "_inBundle": false,
+  "_integrity": "sha1-0PM0OEY71Wt0QPfA1f1seDYLLVs=",
+  "_location": "/grunt-bless",
+  "_phantomChildren": {
+    "escape-string-regexp": "1.0.5"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "grunt-bless",
+    "name": "grunt-bless",
+    "escapedName": "grunt-bless",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/grunt-bless/-/grunt-bless-1.0.2.tgz",
+  "_shasum": "d0f33438463bd56b7440f7c0d5fd6c78360b2d5b",
+  "_spec": "grunt-bless",
+  "_where": "/Applications/MAMP/htdocs/node_modules_new",
   "author": {
     "name": "Aki Alexandra Nofftz",
     "email": "aki@nofftz.name"
   },
+  "bugs": {
+    "url": "https://github.com/Ponginae/grunt-bless/issues"
+  },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Aaron Spaulding",
       "email": "aaron@sachimp.com"
     }
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Ponginae/grunt-bless"
+  "dependencies": {
+    "async": "^1.5.0",
+    "babel-runtime": "^6.5.0",
+    "bless": "~4.0.0",
+    "chalk": "~1.1.0",
+    "es6-promise": "^3.1.2"
   },
-  "bugs": {
-    "url": "https://github.com/Ponginae/grunt-bless/issues"
+  "deprecated": false,
+  "description": "Split CSS files suitable for IE",
+  "devDependencies": {
+    "grunt": ">=0.4.0",
+    "grunt-babel": "^5.0.1",
+    "grunt-contrib-clean": "~1.0.0",
+    "grunt-contrib-jshint": "~1.0.0",
+    "grunt-mocha-test": "^0.12.7",
+    "mocha": "^2.3.4"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/Ponginae/grunt-bless/blob/master/LICENSE-MIT"
-    }
-  ],
-  "main": "Gruntfile.js",
   "engines": {
     "node": ">= 0.8.0"
   },
-  "scripts": {
-    "test": "grunt test"
-  },
-  "dependencies": {
-    "bless": "~3.0.0",
-    "chalk": "~0.5.1"
-  },
-  "devDependencies": {
-    "grunt-contrib-jshint": "~0.1.1",
-    "grunt-contrib-clean": "~0.4.0",
-    "grunt": "~0.4.1"
-  },
-  "peerDependencies": {
-    "grunt": "~0.4.1"
-  },
+  "homepage": "https://github.com/Ponginae/grunt-bless",
   "keywords": [
     "gruntplugin",
     "bless",
@@ -55,25 +70,24 @@
     "4095",
     "31"
   ],
-  "gitHead": "e00ede265252adac654c93ac8ff0cda27844f209",
-  "_id": "grunt-bless@0.2.0",
-  "_shasum": "6a18a40da1820ec45cbcfea9d155ee2b4c80afe6",
-  "_from": "grunt-bless@*",
-  "_npmVersion": "2.0.0-alpha-5",
-  "_npmUser": {
-    "name": "aaronasachimp",
-    "email": "aaron@sachimp.com"
-  },
-  "maintainers": [
+  "licenses": [
     {
-      "name": "aaronasachimp",
-      "email": "aaron@sachimp.com"
+      "type": "MIT",
+      "url": "https://github.com/Ponginae/grunt-bless/blob/master/LICENSE-MIT"
     }
   ],
-  "dist": {
-    "shasum": "6a18a40da1820ec45cbcfea9d155ee2b4c80afe6",
-    "tarball": "http://registry.npmjs.org/grunt-bless/-/grunt-bless-0.2.0.tgz"
+  "main": "Gruntfile.js",
+  "name": "grunt-bless",
+  "peerDependencies": {
+    "grunt": ">=0.4.0"
   },
-  "directories": {},
-  "_resolved": "https://registry.npmjs.org/grunt-bless/-/grunt-bless-0.2.0.tgz"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ponginae/grunt-bless.git"
+  },
+  "scripts": {
+    "pretest": "grunt",
+    "test": "grunt test && grunt --gruntfile ./test/Gruntfile.js -v"
+  },
+  "version": "1.0.2"
 }
