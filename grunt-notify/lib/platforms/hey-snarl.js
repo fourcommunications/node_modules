@@ -17,7 +17,7 @@ var findApp = require('../util/findApp');
 var cmd = 'heysnarl.exe';
 
 var IS_WINDOWS = os.type() === 'Windows_NT';
-var DEFAULT_IMAGE = path.resolve(__dirname + '../../../images/grunt-logo.png');
+var DEFAULT_IMAGE = path.resolve(__dirname, '../../images/grunt-logo.png');
 
 function findInstall() {
 
@@ -30,7 +30,7 @@ function findInstall() {
     findApp(path.join(PROGRAM_FILES, INSTALL_DIR_1, cmd)) ||
     findApp(path.join(PROGRAM_FILES_X86, INSTALL_DIR_1, cmd)) ||
     findApp(path.join(PROGRAM_FILES, INSTALL_DIR_2, cmd)) ||
-    findApp(path.join(PROGRAM_FILES_X86, INSTALL_DIR_2, cmd))
+    findApp(path.join(PROGRAM_FILES_X86, INSTALL_DIR_2, cmd));
 }
 
 var fullPathToApplication = findInstall();

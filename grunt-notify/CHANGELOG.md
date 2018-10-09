@@ -1,3 +1,8 @@
+* 7 Nov 2014 - 0.4.0
+ * Option for notification on success messages
+ * Duration option for notify-send
+* 7 Aug 2014 - 0.3.1
+ * Updated dependencies
 * 26 April 2014 - 0.3.0
  * Windows 8 Notifications thanks to [@enzy](https://github.com/enzy).
 * 10 March 2014 - 0.2.20

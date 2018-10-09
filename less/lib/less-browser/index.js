@@ -2,37 +2,32 @@
 // index.js
 // Should expose the additional browser functions on to the less object
 //
-var addDataAttr = require("./utils").addDataAttr,
-    browser = require("./browser");
+var addDataAttr = require('./utils').addDataAttr,
+    browser = require('./browser');
 
 module.exports = function(window, options) {
     var document = window.document;
     var less = require('../less')();
-    //module.exports = less;
+    
     less.options = options;
     var environment = less.environment,
-        FileManager = require("./file-manager")(options, less.logger),
+        FileManager = require('./file-manager')(options, less.logger),
         fileManager = new FileManager();
     environment.addFileManager(fileManager);
     less.FileManager = FileManager;
+    less.PluginLoader = require('./plugin-loader');
 
-    require("./log-listener")(less, options);
-    var errors = require("./error-reporting")(window, less, options);
-    var cache = less.cache = options.cache || require("./cache")(window, options, less.logger);
+    require('./log-listener')(less, options);
+    var errors = require('./error-reporting')(window, less, options);
+    var cache = less.cache = options.cache || require('./cache')(window, options, less.logger);
+    require('./image-size')(less.environment);
 
-    //Setup user functions
+    // Setup user functions - Deprecate?
     if (options.functions) {
         less.functions.functionRegistry.addMultiple(options.functions);
     }
 
     var typePattern = /^text\/(x-)?less$/;
-
-    function postProcessCSS(styles) { // deprecated, use a plugin for postprocesstasks
-        if (options.postProcessor && typeof options.postProcessor === 'function') {
-            styles = options.postProcessor.call(styles, styles) || styles;
-        }
-        return styles;
-    }
 
     function clone(obj) {
         var cloned = {};
@@ -65,12 +60,12 @@ module.exports = function(window, options) {
                 var lessText = style.innerHTML || '';
                 instanceOptions.filename = document.location.href.replace(/#.*$/, '');
 
-                /*jshint loopfunc:true */
+                /* jshint loopfunc:true */
                 // use closure to store current style
                 less.render(lessText, instanceOptions,
                         bind(function(style, e, result) {
                             if (e) {
-                                errors.add(e, "inline");
+                                errors.add(e, 'inline');
                             } else {
                                 style.type = 'text/css';
                                 if (style.styleSheet) {
@@ -104,7 +99,8 @@ module.exports = function(window, options) {
                 currentDirectory: fileManager.getPath(path),
                 filename: path,
                 rootFilename: path,
-                relativeUrls: instanceOptions.relativeUrls};
+                rewriteUrls: instanceOptions.rewriteUrls
+            };
 
             newFileInfo.entryPath = newFileInfo.currentDirectory;
             newFileInfo.rootpath = instanceOptions.rootpath || newFileInfo.currentDirectory;
@@ -112,17 +108,16 @@ module.exports = function(window, options) {
             if (webInfo) {
                 webInfo.remaining = remaining;
 
-                if (!instanceOptions.modifyVars) {
-                    var css = cache.getCSS(path, webInfo);
-                    if (!reload && css) {
-                        webInfo.local = true;
-                        callback(null, css, data, sheet, webInfo, path);
-                        return;
-                    }
+                var css = cache.getCSS(path, webInfo, instanceOptions.modifyVars);
+                if (!reload && css) {
+                    webInfo.local = true;
+                    callback(null, css, data, sheet, webInfo, path);
+                    return;
                 }
+
             }
 
-            //TODO add tests around how this behaves when reloading
+            // TODO add tests around how this behaves when reloading
             errors.remove(path);
 
             instanceOptions.rootFileInfo = newFileInfo;
@@ -131,22 +126,20 @@ module.exports = function(window, options) {
                     e.href = path;
                     callback(e);
                 } else {
-                    result.css = postProcessCSS(result.css);
-                    if (!instanceOptions.modifyVars) {
-                        cache.setCSS(sheet.href, webInfo.lastModified, result.css);
-                    }
+                    cache.setCSS(sheet.href, webInfo.lastModified, instanceOptions.modifyVars, result.css);
                     callback(null, result.css, data, sheet, webInfo, path);
                 }
             });
         }
 
-        fileManager.loadFile(sheet.href, null, instanceOptions, environment, function(e, loadedFile) {
-            if (e) {
-                callback(e);
-                return;
-            }
-            loadInitialFileCallback(loadedFile);
-        });
+        fileManager.loadFile(sheet.href, null, instanceOptions, environment)
+            .then(function(loadedFile) {
+                loadInitialFileCallback(loadedFile);
+            }).catch(function(err) {
+                console.log(err);
+                callback(err);
+            });
+
     }
 
     function loadStyleSheets(callback, reload, modifyVars) {
@@ -226,34 +219,57 @@ module.exports = function(window, options) {
             fileManager.clearFileCache();
         }
         return new Promise(function (resolve, reject) {
-            var startTime, endTime, totalMilliseconds;
+            var startTime, endTime, totalMilliseconds, remainingSheets;
             startTime = endTime = new Date();
 
-            loadStyleSheets(function (e, css, _, sheet, webInfo) {
-                if (e) {
-                    errors.add(e, e.href || sheet.href);
-                    reject(e);
-                    return;
-                }
-                if (webInfo.local) {
-                    less.logger.info("loading " + sheet.href + " from cache.");
-                } else {
-                    less.logger.info("rendered " + sheet.href + " successfully.");
-                }
-                browser.createCSS(window.document, css, sheet);
-                less.logger.info("css for " + sheet.href + " generated in " + (new Date() - endTime) + 'ms');
-                if (webInfo.remaining === 0) {
-                    totalMilliseconds = new Date() - startTime;
-                    less.logger.info("less has finished. css generated in " + totalMilliseconds + 'ms');
-                    resolve({
-                        startTime: startTime,
-                        endTime: endTime,
-                        totalMilliseconds: totalMilliseconds,
-                        sheets: less.sheets.length
-                    });
-                }
+            // Set counter for remaining unprocessed sheets
+            remainingSheets = less.sheets.length;
+
+            if (remainingSheets === 0) {
+
                 endTime = new Date();
-            }, reload, modifyVars);
+                totalMilliseconds = endTime - startTime;
+                less.logger.info('Less has finished and no sheets were loaded.');
+                resolve({
+                    startTime: startTime,
+                    endTime: endTime,
+                    totalMilliseconds: totalMilliseconds,
+                    sheets: less.sheets.length
+                });
+
+            } else {
+                // Relies on less.sheets array, callback seems to be guaranteed to be called for every element of the array
+                loadStyleSheets(function (e, css, _, sheet, webInfo) {
+                    if (e) {
+                        errors.add(e, e.href || sheet.href);
+                        reject(e);
+                        return;
+                    }
+                    if (webInfo.local) {
+                        less.logger.info('Loading ' + sheet.href + ' from cache.');
+                    } else {
+                        less.logger.info('Rendered ' + sheet.href + ' successfully.');
+                    }
+                    browser.createCSS(window.document, css, sheet);
+                    less.logger.info('CSS for ' + sheet.href + ' generated in ' + (new Date() - endTime) + 'ms');
+
+                    // Count completed sheet
+                    remainingSheets--;
+
+                    // Check if the last remaining sheet was processed and then call the promise
+                    if (remainingSheets === 0) {
+                        totalMilliseconds = new Date() - startTime;
+                        less.logger.info('Less has finished. CSS generated in ' + totalMilliseconds + 'ms');
+                        resolve({
+                            startTime: startTime,
+                            endTime: endTime,
+                            totalMilliseconds: totalMilliseconds,
+                            sheets: less.sheets.length
+                        });
+                    }
+                    endTime = new Date();
+                }, reload, modifyVars);
+            }
 
             loadStyles(modifyVars);
         });

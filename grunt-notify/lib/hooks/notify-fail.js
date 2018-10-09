@@ -7,7 +7,7 @@
  */
 'use strict';
 
-module.exports = function(grunt, options) {
+module.exports = function (grunt, options) {
 
   var message_count = 0;
   var StackParser = require('stack-parser');
@@ -16,20 +16,28 @@ module.exports = function(grunt, options) {
 
   var cwd = process.cwd();
 
+  function toggleSuccessNotify() {
+    if (!!options.success) {
+      grunt.util.hooker.hook(grunt.log, 'success', notifyHook);
+    } else {
+      grunt.util.hooker.unhook(grunt.log, 'success');
+    }
+  }
+
   function watchForContribWatchWarnings(e) {
 
     if (!e || typeof e !== 'string') {
-        return;
+      return;
     }
 
     var msg = removeColor(e);
     msg = msg.replace(' Use --force to continue.', '');
 
     if (msg.indexOf('Warning:') === 0) {
-        return notifyHook(msg.replace('Warning: ', ''));
+      return notifyHook(msg.replace('Warning: ', ''));
     }
     if (msg.indexOf('Fatal error:') === 0) {
-        return notifyHook(msg.replace('Fatal error: ', ''));
+      return notifyHook(msg.replace('Fatal error: ', ''));
     }
 
     return e;
@@ -38,7 +46,7 @@ module.exports = function(grunt, options) {
   function exception(e) {
     var stackDump, stack, message;
 
-    if (e.stack && typeof e.stack !== 'string'){
+    if (e.stack && typeof e.stack !== 'string') {
       stackDump = StackParser.parse(e.stack);
       stack = stackDump[0];
 
@@ -102,8 +110,9 @@ module.exports = function(grunt, options) {
     message = message.replace(cwd, '').replace('\x07', '');
 
     return notify({
-      title:    options.title + (grunt.task.current.nameArgs ? ' ' + grunt.task.current.nameArgs : ''),
-      message:  message
+      title: options.title + (grunt.task.current.nameArgs ? ' ' + grunt.task.current.nameArgs : ''),
+      message: message,
+      duration: options.duration
     });
   }
 
@@ -116,6 +125,8 @@ module.exports = function(grunt, options) {
   grunt.util.hooker.hook(grunt.log, 'error', notifyHook);
   // run on fatal
   grunt.util.hooker.hook(grunt.fail, 'fatal', notifyHook);
+  // run on success
+  toggleSuccessNotify();
 
   // grunt-contrib-watch replaces some of these functions so
   // we need to watch all writeln's too
@@ -124,6 +135,7 @@ module.exports = function(grunt, options) {
 
   function setOptions(opts) {
     options = opts;
+    toggleSuccessNotify();
   }
 
   return {
