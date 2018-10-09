@@ -17,7 +17,8 @@
   },
   "_requiredBy": [
     "#USER",
-    "/"
+    "/",
+    "/grunt-contrib-less"
   ],
   "_resolved": "https://registry.npmjs.org/less/-/less-3.8.1.tgz",
   "_shasum": "f31758598ef5a1930dd4caefa9e4340641e71e1d",
@@ -54,7 +55,7 @@
   "deprecated": false,
   "description": "Leaner CSS",
   "devDependencies": {
-    "bootstrap": "3.3.7",
+    "bootstrap": "4.1.2",
     "bootstrap-less-port": "0.3.0",
     "diff": "^3.2.0",
     "git-rev": "^0.2.1",
