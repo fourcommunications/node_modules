@@ -68,7 +68,7 @@
   "deprecated": false,
   "description": "Grunt task for converting a set of images into a spritesheet and corresponding CSS variables.",
   "devDependencies": {
-    "eslint": "~4.10.0",
+    "eslint": "~6.5.1",
     "eslint-config-twolfson": "~1.0.0",
     "foundry": "~4.3.2",
     "foundry-release-git": "~2.0.2",
